@@ -2,7 +2,8 @@
 name: Chisel
 version: 0.0.5
 slug: chisel
-description: "Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH"
+description: >
+  Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH
 url: "https://github.com/m2sh/ha-addon-chisel/"
 codenotary: dev@example.com
 init: false
@@ -80,4 +81,4 @@ schema:
   # Common options
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   pid: bool?
-  verbose: bool? 
+  verbose: bool?
