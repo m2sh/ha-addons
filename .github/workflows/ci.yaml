@@ -70,10 +70,6 @@ jobs:
     steps:
       - uses: "actions/checkout@v4"
       - uses: "docker/setup-buildx-action@v3"
-      - name: "Get addon config"
-        id: get-config
-        run: |
-          echo "config=$(cat addons.json)" >> $GITHUB_OUTPUT
       - name: "Build ${{ matrix.addon }}"
         uses: "docker/build-push-action@v5"
         with:
@@ -87,8 +83,8 @@ jobs:
             BUILD_FROM=ghcr.io/hassio-addons/base/amd64:14.0.0
             BUILD_ARCH=amd64
             BUILD_DATE=${{ github.event.head_commit.timestamp }}
-            BUILD_DESCRIPTION=${{ fromJSON(steps.get-config.outputs.config).addons[matrix.addon].description }}
-            BUILD_NAME=${{ fromJSON(steps.get-config.outputs.config).addons[matrix.addon].name }}
+            BUILD_DESCRIPTION="A fast TCP/UDP tunnel over HTTP, secured via SSH"
+            BUILD_NAME="Chisel"
             BUILD_REF=${{ github.sha }}
             BUILD_REPOSITORY=${{ github.repository }}
-            BUILD_VERSION=${{ fromJSON(steps.get-config.outputs.config).addons[matrix.addon].version }}
+            BUILD_VERSION="1.9.1"
