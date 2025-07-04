@@ -28,4 +28,4 @@ rules:
     check-multi-line-strings: false
 
   # Trailing spaces
-  trailing-spaces: enable 
+  trailing-spaces: enable
