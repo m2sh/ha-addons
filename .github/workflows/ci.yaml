@@ -70,7 +70,7 @@ jobs:
     if: always() && (needs.update-addons.result == 'success' || needs.update-addons.result == 'skipped') && needs.lint.result == 'success'
     strategy:
       matrix:
-        addon: [[chisel]]
+        addon: [chisel]
         include:
           - addon: chisel
             image: ghcr.io/m2sh/chisel

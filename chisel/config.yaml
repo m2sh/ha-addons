@@ -1,8 +1,8 @@
 ---
-name: Chisel
-version: 0.0.3
-slug: chisel
-description: "Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH"
+name: "Chisel"
+version: "1.9.1"
+slug: "chisel"
+description: "A fast TCP/UDP tunnel over HTTP, secured via SSH"
 repository: https://github.com/m2sh/ha-addon-chisel
 url: "https://github.com/m2sh/ha-addon-chisel/"
 codenotary: dev@example.com
@@ -10,12 +10,15 @@ init: false
 hassio_api: true
 hassio_role: homeassistant
 arch:
+  - armhf
+  - armv7
   - aarch64
   - amd64
-  - armv7
+  - i386
 image: "ghcr.io/m2sh/ha-addon-chisel/{arch}"
 map:
-  - addon_config:rw
+  - config:rw
+  - ssl:rw
 options:
   mode: "server"
   # Server options
@@ -43,16 +46,25 @@ options:
   client_tls_key: ""
   client_tls_cert: ""
   # Common options
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  log_level: info
   pid: false
   verbose: false
 ports:
-  8080/tcp: null
-  1080/tcp: null
+  8080/tcp: 8080
+  8081/tcp: 8081
+  8082/tcp: 8082
+  8083/tcp: 8083
+  8084/tcp: 8084
+  8085/tcp: 8085
+  8086/tcp: 8086
+  8087/tcp: 8087
+  8088/tcp: 8088
+  8089/tcp: 8089
+  8090/tcp: 8090
 schema:
   mode: list(server|client)
   # Server options
-  server_port: int?
+  server_port: port
   server_keyfile: str?
   server_authfile: str?
   server_socks5: bool?
@@ -79,6 +91,11 @@ schema:
   client_tls_key: str?
   client_tls_cert: str?
   # Common options
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  log_level: list(trace|debug|info|warning|error|fatal)
   pid: bool?
-  verbose: bool? 
+  verbose: bool?
+webui: "http://[HOST]:[PORT:8080]"
+ingress: true
+ingress_port: 8080
+panel_icon: mdi:tunnel
+homeassistant_api: false
