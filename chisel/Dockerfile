@@ -12,14 +12,6 @@ ENV S6_VERBOSITY=1
 ARG BUILD_ARCH=amd64
 ARG CHISEL_VERSION="1.10.1"
 
-# Debug: Print architecture info
-RUN echo "Building for architecture: ${BUILD_ARCH}" && \
-    echo "Current architecture: $(uname -m)" && \
-    echo "Current platform: $(uname -a)" && \
-    echo "Available architectures:" && \
-    dpkg --print-architecture && \
-    dpkg --print-foreign-architectures || true
-
 # Copy root filesystem
 COPY rootfs /
 
