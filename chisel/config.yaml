@@ -1,6 +1,6 @@
 ---
 name: Chisel
-version: 0.0.7
+version: 0.0.5
 slug: chisel
 description: >
   Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH
@@ -43,42 +43,114 @@ options:
   client_tls_key: ""
   client_tls_cert: ""
   # Common options
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  log_level: "info"
   pid: false
   verbose: false
 ports:
   8080/tcp: null
   1080/tcp: null
 schema:
-  mode: list(server|client)
-  # Server options
-  server_port: int?
-  server_keyfile: str?
-  server_authfile: str?
-  server_socks5: bool?
-  server_reverse: bool?
-  server_proxy: str?
+  mode:
+    type: "list(server|client)"
+    name: "Mode"
+    description: "Select 'server' to run as a Chisel server, or 'client' to connect to a remote server."
+  server_port:
+    type: "int"
+    name: "Server Port"
+    description: "Port for the Chisel server to listen on (server mode only)."
+  server_keyfile:
+    type: "str"
+    name: "Server Key File"
+    description: "Path to the server's private key file (server mode only). Leave blank to auto-generate."
+  server_authfile:
+    type: "str"
+    name: "Server Auth File"
+    description: "Path to the authentication file for users (server mode only)."
+  server_socks5:
+    type: "bool"
+    name: "Enable SOCKS5 Proxy"
+    description: "Enable SOCKS5 proxy on the server (server mode only)."
+  server_reverse:
+    type: "bool"
+    name: "Enable Reverse Tunneling"
+    description: "Allow reverse tunnels from clients (server mode only)."
+  server_proxy:
+    type: "str"
+    name: "Upstream Proxy"
+    description: "Proxy server URL for outgoing connections (server mode only)."
   server_header:
-    - str
-  # Client options
-  client_server: str?
-  client_fingerprint: str?
-  client_auth: str?
+    type: "list(str)"
+    name: "Custom HTTP Headers"
+    description: "List of custom HTTP headers to add (server mode only)."
+  client_server:
+    type: "str"
+    name: "Chisel Server URL"
+    description: "URL of the remote Chisel server to connect to (client mode only)."
+  client_fingerprint:
+    type: "str"
+    name: "Server Fingerprint"
+    description: "Fingerprint of the remote server's public key (client mode only)."
+  client_auth:
+    type: "str"
+    name: "Client Auth Credentials"
+    description: "Authentication credentials for the server (format: user:pass, client mode only)."
   client_remotes:
-    - str
-  client_keepalive: str?
-  client_max_retry_count: int?
-  client_max_retry_interval: str?
-  client_proxy: str?
+    type: "list(str)"
+    name: "Remote Tunnels"
+    description: "List of remote tunnel specifications (e.g., 8080:localhost:8123, client mode only)."
+  client_keepalive:
+    type: "str"
+    name: "Keepalive Interval"
+    description: "Interval for keepalive messages to the server (client mode only)."
+  client_max_retry_count:
+    type: "int"
+    name: "Max Retry Count"
+    description: "Maximum number of connection retries (0 = unlimited, client mode only)."
+  client_max_retry_interval:
+    type: "str"
+    name: "Max Retry Interval"
+    description: "Maximum interval between retries (client mode only)."
+  client_proxy:
+    type: "str"
+    name: "Client Proxy"
+    description: "Proxy server URL for outgoing client connections (client mode only)."
   client_header:
-    - str
-  client_hostname: str?
-  client_sni: str?
-  client_tls_ca: str?
-  client_tls_skip_verify: bool?
-  client_tls_key: str?
-  client_tls_cert: str?
-  # Common options
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
-  pid: bool?
-  verbose: bool?
+    type: "list(str)"
+    name: "Custom Client HTTP Headers"
+    description: "List of custom HTTP headers to add (client mode only)."
+  client_hostname:
+    type: "str"
+    name: "Custom Hostname"
+    description: "Custom Host header for outgoing connections (client mode only)."
+  client_sni:
+    type: "str"
+    name: "SNI"
+    description: "Server Name Indication for TLS connections (client mode only)."
+  client_tls_ca:
+    type: "str"
+    name: "TLS CA Certificate"
+    description: "Path to CA certificate for TLS verification (client mode only)."
+  client_tls_skip_verify:
+    type: "bool"
+    name: "Skip TLS Verification"
+    description: "Skip TLS certificate verification (client mode only)."
+  client_tls_key:
+    type: "str"
+    name: "TLS Client Key"
+    description: "Path to client TLS key (client mode only)."
+  client_tls_cert:
+    type: "str"
+    name: "TLS Client Certificate"
+    description: "Path to client TLS certificate (client mode only)."
+  log_level:
+    type: "list(trace|debug|info|notice|warning|error|fatal)"
+    name: "Log Level"
+    description: "Set the log verbosity level."
+  pid:
+    type: "bool"
+    name: "Enable PID File"
+    description: "Write a PID file for the Chisel process."
+  verbose:
+    type: "bool"
+    name: "Verbose Logging"
+    description: "Enable verbose logging for debugging."
