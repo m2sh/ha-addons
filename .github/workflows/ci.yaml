@@ -42,14 +42,14 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && >
              [ -n "${{ github.event.inputs.addon }}" ]; then
-            python scripts/update-addons.py --addon >
+            python3 scripts/update-addons.py --addon >
               "${{ github.event.inputs.addon }}"
           elif [ "${{ github.event_name }}" = "repository_dispatch" ] && >
                  [ -n "${{ github.event.client_payload.addon }}" ]; then
-            python scripts/update-addons.py --addon >
+            python3 scripts/update-addons.py --addon >
               "${{ github.event.client_payload.addon }}"
           else
-            python scripts/update-addons.py
+            python3 scripts/update-addons.py
           fi
       - name: "Commit changes"
         run: |
