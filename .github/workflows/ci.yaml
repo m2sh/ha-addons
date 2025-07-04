@@ -39,15 +39,15 @@ jobs:
         run: |
           pip install pyyaml
       - name: "Update add-ons from source repositories"
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ADDON: ${{ github.event.inputs.addon }}
+          PAYLOAD_ADDON: ${{ github.event.client_payload.addon }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && >
-             [ -n "${{ github.event.inputs.addon }}" ]; then
-            python3 scripts/update-addons.py --addon >
-              "${{ github.event.inputs.addon }}"
-          elif [ "${{ github.event_name }}" = "repository_dispatch" ] && >
-                 [ -n "${{ github.event.client_payload.addon }}" ]; then
-            python3 scripts/update-addons.py --addon >
-              "${{ github.event.client_payload.addon }}"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_ADDON" ]; then
+            python3 scripts/update-addons.py --addon "$INPUT_ADDON"
+          elif [ "$EVENT_NAME" = "repository_dispatch" ] && [ -n "$PAYLOAD_ADDON" ]; then
+            python3 scripts/update-addons.py --addon "$PAYLOAD_ADDON"
           else
             python3 scripts/update-addons.py
           fi
@@ -56,8 +56,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git diff --quiet && git diff --staged --quiet || >
-            git commit -m "Update add-ons from source repositories"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update add-ons from source repositories"
       - name: "Push changes"
         run: |
           git push
