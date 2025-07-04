@@ -1,6 +1,6 @@
 ---
 name: Chisel
-version: 0.0.5
+version: 0.0.6
 slug: chisel
 description: >
   Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH
