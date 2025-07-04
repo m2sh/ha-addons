@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:14.0.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:18.0.2
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -11,6 +11,14 @@ ENV S6_VERBOSITY=1
 # Setup base
 ARG BUILD_ARCH=amd64
 ARG CHISEL_VERSION="1.10.1"
+
+# Debug: Print architecture info
+RUN echo "Building for architecture: ${BUILD_ARCH}" && \
+    echo "Current architecture: $(uname -m)" && \
+    echo "Current platform: $(uname -a)" && \
+    echo "Available architectures:" && \
+    dpkg --print-architecture && \
+    dpkg --print-foreign-architectures || true
 
 # Copy root filesystem
 COPY rootfs /

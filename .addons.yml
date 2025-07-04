@@ -1,92 +1,11 @@
----
-# Home Assistant Add-ons Repository Configuration
-# This file defines the structure and metadata for all add-ons
-
 repository:
-  name: "M2SH Home Assistant Add-ons"
-  description: "A collection of Home Assistant add-ons by Mohammad Shahgolzadeh"
-  url: "https://github.com/m2sh/ha-addons"
-  maintainer: "Mohammad Shahgolzadeh <https://github.com/m2sh/>"
-  version: "1.0.0"
-
+  name: M2SH Home Assistant Add-ons
+  description: A collection of Home Assistant add-ons by Mohammad Shahgolzadeh
+  url: https://github.com/m2sh/ha-addons
+  maintainer: Mohammad Shahgolzadeh <https://github.com/m2sh/>
+  version: 1.0.0
 addons:
   chisel:
-    name: "Chisel"
-    description: "A fast TCP/UDP tunnel over HTTP, secured via SSH"
-    version: "1.10.1"
-    slug: "chisel"
-    url: "https://github.com/m2sh/ha-addons"
-    arch:
-      - armhf
-      - armv7
-      - aarch64
-      - amd64
-      - i386
-    panel_icon: "mdi:tunnel"
-    panel_title: "Chisel"
-    panel_admin: false
-    startup: "application"
-    ports:
-      8080/tcp: 8080
-      1080/tcp: 1080
-    map:
-      - addon_config:rw
-    environment:
-      - TZ=UTC
-    options:
-      mode: "server"
-      server_port: 8080
-      server_keyfile: ""
-      server_authfile: ""
-      server_socks5: false
-      server_reverse: false
-      server_proxy: ""
-      server_header: []
-      client_server: ""
-      client_fingerprint: ""
-      client_auth: ""
-      client_remotes: []
-      client_keepalive: "25s"
-      client_max_retry_count: 0
-      client_max_retry_interval: "5m"
-      client_proxy: ""
-      client_header: []
-      client_hostname: ""
-      client_sni: ""
-      client_tls_ca: ""
-      client_tls_skip_verify: false
-      client_tls_key: ""
-      client_tls_cert: ""
-      log_level: "info"
-      pid: false
-      verbose: false
-    schema:
-      mode: list(server|client)
-      server_port: int?
-      server_keyfile: str?
-      server_authfile: str?
-      server_socks5: bool?
-      server_reverse: bool?
-      server_proxy: str?
-      server_header:
-        - str
-      client_server: str?
-      client_fingerprint: str?
-      client_auth: str?
-      client_remotes:
-        - str
-      client_keepalive: str?
-      client_max_retry_count: int?
-      client_max_retry_interval: str?
-      client_proxy: str?
-      client_header:
-        - str
-      client_hostname: str?
-      client_sni: str?
-      client_tls_ca: str?
-      client_tls_skip_verify: bool?
-      client_tls_key: str?
-      client_tls_cert: str?
-      log_level: list(trace|debug|info|notice|warning|error|fatal)?
-      pid: bool?
-      verbose: bool?
+    repo: https://github.com/m2sh/ha-addon-chisel
+    branch: main
+    version: 0.0.5

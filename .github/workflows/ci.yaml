@@ -7,10 +7,68 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    # Run daily at 2 AM UTC to check for updates
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      addon:
+        description: 'Specific addon to update (optional)'
+        required: false
+        type: string
+  repository_dispatch:
+    # Webhook endpoint for external repositories to trigger updates
+    types: [addon-update]
 
 jobs:
+  update-addons:
+    runs-on: "ubuntu-latest"
+    if: >
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'repository_dispatch' &&
+       github.event.client_payload.addon)
+    steps:
+      - uses: "actions/checkout@v4"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.11"
+      - name: "Install dependencies"
+        run: |
+          pip install pyyaml
+      - name: "Update add-ons from source repositories"
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && >
+             [ -n "${{ github.event.inputs.addon }}" ]; then
+            python scripts/update-addons.py --addon >
+              "${{ github.event.inputs.addon }}"
+          elif [ "${{ github.event_name }}" = "repository_dispatch" ] && >
+                 [ -n "${{ github.event.client_payload.addon }}" ]; then
+            python scripts/update-addons.py --addon >
+              "${{ github.event.client_payload.addon }}"
+          else
+            python scripts/update-addons.py
+          fi
+      - name: "Commit changes"
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --quiet && git diff --staged --quiet || >
+            git commit -m "Update add-ons from source repositories"
+      - name: "Push changes"
+        run: |
+          git push
+
   lint:
     runs-on: "ubuntu-latest"
+    needs: update-addons
+    if: >
+      always() &&
+      (needs.update-addons.result == 'success' ||
+       needs.update-addons.result == 'skipped')
     steps:
       - uses: "actions/checkout@v4"
       - uses: "actions/setup-python@v4"
