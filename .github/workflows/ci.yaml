@@ -70,6 +70,10 @@ jobs:
     steps:
       - uses: "actions/checkout@v4"
       - uses: "docker/setup-buildx-action@v3"
+      - name: "Get addon config"
+        id: get-config
+        run: |
+          echo "config=$(cat addons.json)" >> $GITHUB_OUTPUT
       - name: "Build ${{ matrix.addon }}"
         uses: "docker/build-push-action@v5"
         with:
@@ -88,7 +92,3 @@ jobs:
             BUILD_REF=${{ github.sha }}
             BUILD_REPOSITORY=${{ github.repository }}
             BUILD_VERSION=${{ fromJSON(steps.get-config.outputs.config).addons[matrix.addon].version }}
-      - name: "Get addon config"
-        id: get-config
-        run: |
-          echo "config=$(cat addons.json)" >> $GITHUB_OUTPUT
