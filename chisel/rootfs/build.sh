@@ -34,9 +34,28 @@ esac
 
 echo "Final architecture for download: $arch"
 
-# Download the chisel binary
+# Download the chisel binary with retry logic
 echo "Downloading Chisel v${chiselRelease} for ${arch}..."
-wget -O /tmp/chisel.gz "https://github.com/jpillora/chisel/releases/download/v${chiselRelease}/chisel_${chiselRelease}_linux_${arch}.gz"
+max_retries=3
+retry_count=0
+
+while [ $retry_count -lt $max_retries ]; do
+    echo "Attempt $((retry_count + 1)) of $max_retries"
+    
+    if wget --timeout=30 --tries=3 -O /tmp/chisel.gz "https://github.com/jpillora/chisel/releases/download/v${chiselRelease}/chisel_${chiselRelease}_linux_${arch}.gz"; then
+        echo "Download successful!"
+        break
+    else
+        retry_count=$((retry_count + 1))
+        if [ $retry_count -lt $max_retries ]; then
+            echo "Download failed, retrying in 5 seconds..."
+            sleep 5
+        else
+            echo "ERROR: Failed to download chisel binary after $max_retries attempts"
+            exit 1
+        fi
+    fi
+done
 
 # Check if download was successful
 if [ ! -f "/tmp/chisel.gz" ]; then
