@@ -1,6 +1,6 @@
 ---
 # Home Assistant Add-ons Repository Configuration
-# This file defines the structure and metadata for all add-ons in this repository
+# This file defines the structure and metadata for all add-ons
 
 repository:
   name: "M2SH Home Assistant Add-ons"
@@ -89,4 +89,4 @@ addons:
       client_tls_cert: str?
       log_level: list(trace|debug|info|notice|warning|error|fatal)?
       pid: bool?
-      verbose: bool? 
+      verbose: bool?
