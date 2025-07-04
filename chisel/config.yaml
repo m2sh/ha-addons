@@ -1,11 +1,11 @@
 ---
 name: Chisel
-version: 0.0.4
+version: 1.10.1
 slug: chisel
 description: >
   Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH
-repository: https://github.com/m2sh/ha-addon-chisel
-url: "https://github.com/m2sh/ha-addon-chisel/"
+repository: https://github.com/m2sh/ha-addons
+url: "https://github.com/m2sh/ha-addons"
 codenotary: dev@example.com
 init: false
 hassio_api: true
@@ -14,7 +14,9 @@ arch:
   - aarch64
   - amd64
   - armv7
-image: "ghcr.io/m2sh/ha-addon-chisel/{arch}"
+  - armhf
+  - i386
+image: "ghcr.io/m2sh/ha-addons-chisel/{arch}"
 map:
   - addon_config:rw
 options:
@@ -44,7 +46,7 @@ options:
   client_tls_key: ""
   client_tls_cert: ""
   # Common options
-  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  log_level: "info"
   pid: false
   verbose: false
 ports:

@@ -7,49 +7,10 @@ on:
   pull_request:
     branches:
       - main
-  schedule:
-    # Run daily at 2 AM UTC to check for updates
-    - cron: '0 2 * * *'
-  workflow_dispatch:
-    inputs:
-      addon:
-        description: 'Specific addon to build (optional)'
-        required: false
-        type: string
 
 jobs:
-  update-addons:
-    runs-on: "ubuntu-latest"
-    if: >
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch'
-    steps:
-      - uses: "actions/checkout@v4"
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: "actions/setup-python@v4"
-        with:
-          python-version: "3.11"
-      - name: "Update add-ons from external repositories"
-        run: python scripts/update-addons.py
-      - name: "Commit changes"
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git diff --quiet && git diff --staged --quiet || >
-            git commit -m "Update add-ons from external repositories"
-      - name: "Push changes"
-        run: |
-          git push
-
   lint:
     runs-on: "ubuntu-latest"
-    needs: update-addons
-    if: >
-      always() &&
-      (needs.update-addons.result == 'success' ||
-       needs.update-addons.result == 'skipped')
     steps:
       - uses: "actions/checkout@v4"
       - uses: "actions/setup-python@v4"
