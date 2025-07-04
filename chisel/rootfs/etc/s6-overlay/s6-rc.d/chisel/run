@@ -1,0 +1,143 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: Chisel
+# Runs the Chisel tunnel for Home Assistant
+# ==============================================================================
+
+declare mode
+declare -a options
+
+# Get the mode (server or client)
+mode=$(bashio::config 'mode')
+
+bashio::log.info "Starting Chisel in ${mode} mode..."
+
+# Set common chisel options
+if bashio::config.true 'verbose' ; then
+    options+=(-v)
+fi
+
+if bashio::config.has_value 'log_level' ; then
+    options+=(--log-level="$(bashio::config 'log_level')")
+fi
+
+if bashio::config.true 'pid' ; then
+    options+=(--pid)
+fi
+
+# Check if we're running in server mode
+if [[ "${mode}" == "server" ]]; then
+    bashio::log.info "Starting Chisel server..."
+    
+    # Add server-specific options
+    if bashio::config.has_value 'server_port' ; then
+        options+=(--port="$(bashio::config 'server_port')")
+    fi
+    
+    if bashio::config.has_value 'server_keyfile' ; then
+        options+=(--keyfile="$(bashio::config 'server_keyfile')")
+    fi
+    
+    if bashio::config.has_value 'server_authfile' ; then
+        options+=(--authfile="$(bashio::config 'server_authfile')")
+    fi
+    
+    if bashio::config.true 'server_socks5' ; then
+        options+=(--socks5)
+    fi
+    
+    if bashio::config.true 'server_reverse' ; then
+        options+=(--reverse)
+    fi
+    
+    if bashio::config.has_value 'server_proxy' ; then
+        options+=(--proxy="$(bashio::config 'server_proxy')")
+    fi
+    
+    if bashio::config.has_value 'server_header' ; then
+        for header in $(bashio::config 'server_header'); do
+            options+=(--header="${header}")
+        done
+    fi
+    
+    bashio::log.debug "chisel server ${options[@]}"
+    exec chisel server "${options[@]}"
+
+# Check if we're running in client mode
+elif [[ "${mode}" == "client" ]]; then
+    bashio::log.info "Starting Chisel client..."
+    
+    # Check if server URL is provided
+    if ! bashio::config.has_value 'client_server' ; then
+        bashio::exit.nok "client_server is required when running in client mode"
+    fi
+    
+    # Add client-specific options
+    if bashio::config.has_value 'client_fingerprint' ; then
+        options+=(--fingerprint="$(bashio::config 'client_fingerprint')")
+    fi
+    
+    if bashio::config.has_value 'client_auth' ; then
+        options+=(--auth="$(bashio::config 'client_auth')")
+    fi
+    
+    if bashio::config.has_value 'client_keepalive' ; then
+        options+=(--keepalive="$(bashio::config 'client_keepalive')")
+    fi
+    
+    if bashio::config.has_value 'client_max_retry_count' ; then
+        options+=(--max-retry-count="$(bashio::config 'client_max_retry_count')")
+    fi
+    
+    if bashio::config.has_value 'client_max_retry_interval' ; then
+        options+=(--max-retry-interval="$(bashio::config 'client_max_retry_interval')")
+    fi
+    
+    if bashio::config.has_value 'client_proxy' ; then
+        options+=(--proxy="$(bashio::config 'client_proxy')")
+    fi
+    
+    if bashio::config.has_value 'client_header' ; then
+        for header in $(bashio::config 'client_header'); do
+            options+=(--header="${header}")
+        done
+    fi
+    
+    if bashio::config.has_value 'client_hostname' ; then
+        options+=(--hostname="$(bashio::config 'client_hostname')")
+    fi
+    
+    if bashio::config.has_value 'client_sni' ; then
+        options+=(--sni="$(bashio::config 'client_sni')")
+    fi
+    
+    if bashio::config.has_value 'client_tls_ca' ; then
+        options+=(--tls-ca="$(bashio::config 'client_tls_ca')")
+    fi
+    
+    if bashio::config.true 'client_tls_skip_verify' ; then
+        options+=(--tls-skip-verify)
+    fi
+    
+    if bashio::config.has_value 'client_tls_key' ; then
+        options+=(--tls-key="$(bashio::config 'client_tls_key')")
+    fi
+    
+    if bashio::config.has_value 'client_tls_cert' ; then
+        options+=(--tls-cert="$(bashio::config 'client_tls_cert')")
+    fi
+    
+    # Add server URL and remotes
+    server_url=$(bashio::config 'client_server')
+    
+    # Check if remotes are provided
+    if ! bashio::config.has_value 'client_remotes' ; then
+        bashio::exit.nok "client_remotes is required when running in client mode"
+    fi
+    
+    bashio::log.debug "chisel client ${options[@]} ${server_url} $(bashio::config 'client_remotes')"
+    exec chisel client "${options[@]}" "${server_url}" $(bashio::config 'client_remotes')
+
+else
+    bashio::exit.nok "Invalid mode: ${mode}. Must be either 'server' or 'client'"
+fi 

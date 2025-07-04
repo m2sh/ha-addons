@@ -1,0 +1,7 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: Chisel
+# Finishes the Chisel tunnel service
+# ==============================================================================
+
+bashio::log.info "Chisel tunnel service stopped" 

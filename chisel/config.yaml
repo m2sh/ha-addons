@@ -1,0 +1,84 @@
+---
+name: Chisel
+version: 0.0.3
+slug: chisel
+description: "Use Chisel to create secure TCP/UDP tunnels over HTTP, transported via SSH"
+repository: https://github.com/m2sh/ha-addon-chisel
+url: "https://github.com/m2sh/ha-addon-chisel/"
+codenotary: dev@example.com
+init: false
+hassio_api: true
+hassio_role: homeassistant
+arch:
+  - aarch64
+  - amd64
+  - armv7
+image: "ghcr.io/m2sh/ha-addon-chisel/{arch}"
+map:
+  - addon_config:rw
+options:
+  mode: "server"
+  # Server options
+  server_port: 8080
+  server_keyfile: ""
+  server_authfile: ""
+  server_socks5: false
+  server_reverse: false
+  server_proxy: ""
+  server_header: []
+  # Client options
+  client_server: ""
+  client_fingerprint: ""
+  client_auth: ""
+  client_remotes: []
+  client_keepalive: "25s"
+  client_max_retry_count: 0
+  client_max_retry_interval: "5m"
+  client_proxy: ""
+  client_header: []
+  client_hostname: ""
+  client_sni: ""
+  client_tls_ca: ""
+  client_tls_skip_verify: false
+  client_tls_key: ""
+  client_tls_cert: ""
+  # Common options
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  pid: false
+  verbose: false
+ports:
+  8080/tcp: null
+  1080/tcp: null
+schema:
+  mode: list(server|client)
+  # Server options
+  server_port: int?
+  server_keyfile: str?
+  server_authfile: str?
+  server_socks5: bool?
+  server_reverse: bool?
+  server_proxy: str?
+  server_header:
+    - str
+  # Client options
+  client_server: str?
+  client_fingerprint: str?
+  client_auth: str?
+  client_remotes:
+    - str
+  client_keepalive: str?
+  client_max_retry_count: int?
+  client_max_retry_interval: str?
+  client_proxy: str?
+  client_header:
+    - str
+  client_hostname: str?
+  client_sni: str?
+  client_tls_ca: str?
+  client_tls_skip_verify: bool?
+  client_tls_key: str?
+  client_tls_cert: str?
+  # Common options
+  log_level: list(trace|debug|info|notice|warning|error|fatal)?
+  pid: bool?
+  verbose: bool? 

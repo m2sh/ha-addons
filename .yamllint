@@ -1,0 +1,40 @@
+extends: default
+
+rules:
+  # 80 chars should be enough, but don't fail if a line is longer
+  line-length:
+    max: 80
+    level: warning
+
+  # Accept both `on` and `On` as valid
+  truthy:
+    check-keys: false
+
+  # Comments are not required
+  comments-indentation: disable
+
+  # YAML anchors are not required
+  document-start: disable
+
+  # Empty lines are fine
+  empty-lines:
+    max: 1
+    max-end: 0
+
+  # Hyphens in keys are fine
+  hyphens:
+    max-spaces-before: 1
+    max-spaces-after: 1
+
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Truthy
+  truthy:
+    check-keys: false 
