@@ -8,4 +8,4 @@ addons:
   chisel:
     repo: https://github.com/m2sh/ha-addon-chisel
     branch: main
-    version: 0.0.6
+    version: 0.0.7
