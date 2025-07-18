@@ -1,0 +1,7 @@
+---
+addons:
+  gluetun:
+    repository: https://github.com/m2sh/ha-addon-gluetun
+    target: gluetun
+    branch: main
+    description: VPN client add-on with support for multiple VPN providers 
