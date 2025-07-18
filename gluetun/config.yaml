@@ -2,6 +2,7 @@ name: "Gluetun VPN"
 version: "1.0.0"
 slug: "gluetun"
 description: "VPN client for multiple providers with proxy services"
+image: "ghcr.io/m2sh/gluetun-{arch}"
 arch:
   - armhf
   - armv7
