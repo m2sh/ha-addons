@@ -47,6 +47,22 @@ If you encounter any issues with these add-ons, please check the following:
 2. Check the [Issues](https://github.com/m2sh/ha-addons/issues) page for known problems
 3. Create a new issue if your problem isn't already reported
 
+### 🔧 Adding More Add-ons
+
+To add new add-ons, simply:
+
+1. Update `addons.yml` with the new add-on configuration
+2. Run `python3 scripts/update_addons.py` or trigger the GitHub Action
+3. Update the README.md to include the new add-on
+
+### 📋 How It Works
+
+- **`addons.yml`**: Defines which add-ons are included and their source repositories
+- **Direct File Copying**: Each add-on is fetched and copied directly from its repository
+- **GitHub Actions**: Automatically updates add-ons when changes are detected in source repositories
+- **Smart Updates**: Only updates add-ons when new commits are available
+- **Home Assistant Integration**: The repository structure is compatible with Home Assistant's add-on system
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.

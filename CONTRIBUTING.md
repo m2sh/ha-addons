@@ -48,7 +48,7 @@ To add a new add-on to this repository:
    ```
 3. **Run the update script**:
    ```bash
-   python scripts/update_submodules.py
+   python3 scripts/update_addons.py
    ```
 4. **Update the README.md** to include your add-on in the list
 

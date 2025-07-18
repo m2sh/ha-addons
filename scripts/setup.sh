@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup script for M2SH Home Assistant Add-ons repository
-# This script initializes the repository and sets up git submodules
+# This script initializes the repository and fetches add-ons from their repositories
 
 set -e
 
@@ -25,6 +25,12 @@ echo "⚙️  Setting up git configuration..."
 git config --local user.name "Mohammad Shahgolzadeh"
 git config --local user.email "m2sh@users.noreply.github.com"
 
+# Install Python dependencies if needed
+if command -v python3 &> /dev/null; then
+    echo "🐍 Installing Python dependencies..."
+    python3 -m pip install --user pyyaml requests
+fi
+
 # Add initial files
 echo "📄 Adding initial files..."
 git add -A
@@ -35,15 +41,18 @@ if ! git rev-parse --verify HEAD >/dev/null 2>&1; then
     git commit -m "🎉 Initial repository setup
 
 - Add repository configuration
-- Set up add-ons structure
+- Set up add-ons structure  
 - Configure GitHub Actions workflow
-- Add submodule management scripts"
+- Add add-on management scripts"
 fi
 
-# Initialize submodules
-echo "🔗 Initializing git submodules..."
-git submodule init
-git submodule update --recursive --remote
+# Fetch add-ons from their repositories
+echo "📦 Fetching add-ons from repositories..."
+if [ -f "scripts/update_addons.py" ]; then
+    python3 scripts/update_addons.py
+else
+    echo "⚠️  Warning: update_addons.py script not found. Add-ons will be fetched by GitHub Actions."
+fi
 
 echo "✅ Repository setup completed!"
 echo ""
@@ -53,4 +62,6 @@ echo "2. Push to GitHub: git push -u origin main"
 echo "3. Enable GitHub Actions in your repository settings"
 echo ""
 echo "To add more add-ons, edit the addons.yml file and run:"
-echo "  python scripts/update_submodules.py" 
+echo "  python3 scripts/update_addons.py"
+echo ""
+echo "Or trigger the GitHub Action manually for automatic updates." 

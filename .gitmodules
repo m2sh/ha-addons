@@ -1,4 +1,0 @@
-[submodule "gluetun"]
-	path = gluetun
-	url = https://github.com/m2sh/ha-addon-gluetun
-	branch = main 
